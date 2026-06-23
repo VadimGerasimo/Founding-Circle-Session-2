@@ -16,7 +16,10 @@ It reads the ICP.md you just made. Answer 4 questions."*
 > against it.
 
 ## How to run the interview
-- Ask the **questions below ONE AT A TIME**, default in brackets, "default"/"skip" accepts it.
+- Ask the **questions below ONE AT A TIME**. Brackets show an **example**, not the answer
+  to accept. This skill is the **voice** of their scorer — its persona, what each
+  scorecard emphasises, its hard rules — so get their own take; that's what makes the
+  build theirs. Enter accepts the example (all-examples still yields a working skill).
 - One-line acknowledgements. No lecturing.
 
 ## Questions
@@ -24,6 +27,12 @@ It reads the ICP.md you just made. Answer 4 questions."*
 2. **What persona should the analyst take?** [A precise, skeptical B2B lead-qualification analyst who never invents facts.]
 3. **What should each scorecard contain?** [Fit 0–100, top 3 reasons, strongest signal, biggest risk, likely buyer, a 2-sentence opener.]
 4. **Any hard rules it must never break?** [Never invent facts; unknown = "unknown" + what's needed; no score above 60 without two confirmed ICP matches; openers stay human and specific.]
+
+**Then one last, optional question:**
+> **Anything else this playbook should always do?** *(optional — press enter to skip)*
+
+If they answer, append it verbatim as an extra bullet under `## GUARDRAILS`. If they
+skip, leave the guardrails as the default below.
 
 ## After the answers — write the file
 Write to **`.claude/skills/lead-qualifier/SKILL.md`** (create the folder if needed),
@@ -56,7 +65,8 @@ Missing field = "unknown". The criteria you score against live in **`ICP.md`** �
 3. Score fit 0–100 against the ICP. Give the 3 biggest reasons.
 4. Flag the single strongest buying signal and the single biggest risk/disqualifier.
 5. Name the likely economic buyer (role/title) and a probable trigger.
-6. Draft a 2-sentence opener referencing one specific, real detail.
+6. Draft a 2-sentence opener referencing one specific, real detail — and tie it to our
+   offer / edge from the **`## Us`** block in `ICP.md`.
 
 ## OUTPUT
 A single scorecard: {answer 3}. Keep it to one compact card. If you cannot assess the

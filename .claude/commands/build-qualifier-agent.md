@@ -17,7 +17,10 @@ lead. Four questions."*
 > `/build-skill` first — the agent follows it.
 
 ## How to run the interview
-- Ask **ONE AT A TIME**, default in brackets, "default"/"skip" accepts it. One-line acks.
+- Ask **ONE AT A TIME**. Brackets show an **example/standard**, not the answer to accept.
+  The **expressive** parts — its single job (Q1) and the discipline that keeps it in lane
+  (Q4) — are worth their own words. The **tools** (Q2) are fixed plumbing: keep the
+  default. Enter accepts the bracket. One-line acks.
 
 ## Questions
 1. **What is this worker's single job?** [Score ONE already-enriched lead against the ICP by following the lead-qualifier skill — and nothing else.]
@@ -42,7 +45,8 @@ You are given exactly **one** lead as an **already-enriched profile**. You do NO
 research — that happened upstream (the lead-researcher agent). Your job:
 
 1. Follow the **lead-qualifier skill** (`.claude/skills/lead-qualifier/`): read `ICP.md`
-   → score vs ICP → flag signal & risk → name the buyer → draft an opener.
+   → score vs ICP → flag signal & risk → name the buyer → draft an opener (tied to our
+   offer / edge in the ICP's `## Us` block).
 2. {answer 1}
 3. {answer 3}
 

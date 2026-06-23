@@ -15,7 +15,10 @@ minutes of manual research, then hands a clean profile to your scoring fleet. Fi
 questions."*
 
 ## How to run the interview
-- Ask **ONE AT A TIME**, default in brackets, "default"/"skip" accepts it. One-line acks.
+- Ask **ONE AT A TIME**. Brackets show an **example/standard**, not the answer to accept.
+  Get their real take on the **expressive** parts — above all **which signals matter to
+  them** (Q2) and the guardrail (Q5). The **plumbing** (start-from, tools, hand-off) is
+  fixed: the bracket is a safe default there. Enter accepts the bracket. One-line acks.
 
 ## Questions
 1. **What does it start from?** [A bare company name + website — no profile yet.]
@@ -44,6 +47,9 @@ enrichment only:
 2. **Hand off**: {answer 4}
 3. Do **not** score and do **not** write a scorecard — that's the lead-qualifier agent's
    job, downstream.
+
+**Don't redo work:** if `leads/<company>.md` already exists as an enriched profile, the
+company was researched on an earlier run — say so and stop. Don't re-research it.
 
 Guardrail: {answer 5} Stay on the one lead you were handed. Be concise.
 

@@ -13,7 +13,8 @@ to score them all, and builds a board.
 
 **Teach it in one line, then start:** *"A command is a button you press — `/qualify`.
 This one runs the whole loop: it spots any lead that still needs research, researches it,
-then scores every lead in parallel and assembles a board. Five questions."*
+then scores every lead in parallel and assembles a board plus a tracked spreadsheet. Six
+questions."*
 
 > This is the **last** piece — it orchestrates the two hires you already built. If
 > `.claude/agents/lead-qualifier.md` (the scorer) or `.claude/agents/lead-researcher.md`
@@ -22,14 +23,19 @@ then scores every lead in parallel and assembles a board. Five questions."*
 > button still scores already-enriched leads; it just can't handle bare ones.)
 
 ## How to run the interview
-- Ask **ONE AT A TIME**, default in brackets, "default"/"skip" accepts it. One-line acks.
+- Ask **ONE AT A TIME**. This one is mostly **orchestration plumbing** (folder, triage,
+  parallel scoring, the named-agent wiring) — the bracket defaults are the known-good
+  setup, so accepting them is the right call. The bits they may want their own way are
+  cosmetic: the final artifact (Q4) and what it prints (Q6). Enter accepts the bracket.
+  One-line acks.
 
 ## Questions
 1. **Which folder of leads does it run over?** [leads/ (the default)]
-2. **If a lead isn't enriched yet, what should the button do?** [Detect it (a bare name/website, missing the profile fields) and send the lead-researcher agent to research it first — only bare leads hit the web; enriched leads are scored straight away.]
+2. **If a lead isn't enriched yet, what should the button do?** [Detect it (a bare name/website, missing the profile fields) and send the lead-researcher agent to research it first — only bare leads hit the web; enriched leads are scored straight away. A lead already enriched from a previous run stays enriched, so a re-run never re-researches it.]
 3. **How should it score them?** [In parallel — dispatch one named lead-qualifier agent per lead, each scoring against ICP.md.]
 4. **What's the final artifact?** [out/index.html — a sortable board, one row per lead (Company · Fit/100 · Strongest signal · Biggest risk · Likely buyer), highest fit first, each row linking to its card.]
-5. **What should it print when done?** [A one-line summary: how many qualified, the top 3 by fit, and how many needed live research.]
+5. **What tracked file should it leave besides the board?** [out/results.csv — one row per lead: company, fit, strongest_signal, biggest_risk, likely_buyer, status (researched / scored / unknown) — a fresh snapshot of this run: a clean spreadsheet of every lead researched, qualified, and scored. Only the research step skips repeat work; scoring always re-runs, so a changed ICP re-flows through every lead.]
+6. **What should it print when done?** [A one-line summary: how many qualified, the top 3 by fit, and how many needed live research.]
 
 ## After the answers — write the file
 Write to **`.claude/commands/qualify.md`**, filling slots from their answers. Keep the
@@ -55,21 +61,26 @@ Do this:
    (size, sector, location, signals). Bare = essentially just a name + website.
 3. **Research the bare ones first.** {answer 2} The lead-researcher writes an enriched
    profile back to `leads/<company>.md`. *(If every lead is already enriched, this step
-   does nothing and the button makes no web calls.)*
-4. **Score everything.** {answer 3} Each writes its scorecard to `out/<company>.html`
-   (a small, self-contained, styled card).
+   does nothing and the button makes no web calls — so a re-run only researches genuinely
+   new leads.)*
+4. **Score everything — every lead, every run.** {answer 3} Each writes its scorecard to
+   `out/<company>.html` (a small, self-contained, styled card). Scoring is cheap and makes
+   no web calls, so **never skip it** — that's what lets a changed `ICP.md` re-flow through
+   every lead: edit the knob, re-run, every score updates.
 5. When all workers finish, build the final artifact: {answer 4}
-6. {answer 5}
+6. **Write the tracked spreadsheet:** {answer 5}
+7. {answer 6}
 
 Keep each agent's work tiny and bounded. Use the cheap model. Only bare leads hit the web.
-If a lead still can't be assessed, give it a row marked "unknown — needs: …".
+If a lead still can't be assessed, give it a row marked "unknown — needs: …" (status
+`unknown` in the CSV).
 ```
 
 ## When done — summarise what they built
 After writing the file, show this short summary (adapt wording, keep it tight):
 
 > **You built: `/qualify`** — the full-loop button, and the last piece. Press it, the whole pipeline runs.
-> **How it fits:** it checks each lead — already enriched leads get scored straight away; bare ones get sent to the **lead-researcher** first, then scored. One `lead-qualifier` agent per lead, in parallel, against your `ICP.md`, then a sortable board. **This is where all five pieces combine into one press.**
+> **How it fits:** it checks each lead — already enriched leads get scored straight away; bare ones get sent to the **lead-researcher** first, then scored. One `lead-qualifier` agent per lead, in parallel, against your `ICP.md`, then a sortable board **and a tracked `out/results.csv`** — your clean spreadsheet of everything researched and scored. Re-runs skip only the expensive **web research** for leads already enriched; **scoring always re-runs**, so change your `ICP.md` and re-press → every score updates. **This is where all five pieces combine into one press.**
 > **Pipeline COMPLETE:** ICP ✅ → skill ✅ → qualifier hire ✅ → researcher hire ✅ → `/qualify` ✅ → board.
 > **Run it now (the climax):** **`/qualify`** on the pre-staged `leads/` — they're already enriched, so it scores them with **no web calls**: your whole pipeline working end-to-end.
 > **The full live loop — same button:** drop a **bare company name + website** into `leads/` and run `/qualify` again. It spots the bare one, researches it live, then scores it — the 40-minutes-per-lead of manual research, gone. You built all of it by answering questions.
